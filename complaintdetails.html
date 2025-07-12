@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complaint Form</title>
+  
+    
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #cfd8dc, #90a4ae);
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #263238;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .navbar a {
+      color: #ffffff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #80deea;
+    }
+
+    .container {
+      background: #37474f;
+      color: white;
+      padding: 30px 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 550px;
+      margin: 40px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: normal;
+      color: #ffffff;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+    }
+
+    input, textarea {
+      background-color: #546e7a;
+      color: white;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #ccc;
+    }
+
+    input:focus, textarea:focus {
+      background-color: #607d8b;
+      outline: none;
+    }
+
+    button {
+      background-color: #00c853;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00a843;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px 15px;
+      }
+    }
+  </style>
+
+
+
+</head>
+<body>
+
+  <!-- 🔗 Navigation bar -->
+  <div class="navbar">
+    <div id="greeting">Hi, User</div>
+    <div>
+      <a href="complaint.html">My Complaint</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>New Complaint Register</h2>
+    
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="address" placeholder="Address">
+    <input type="text" id="city" placeholder="City">
+    <input type="text" id="state" placeholder="State">
+    <input type="text" id="pincode" placeholder="Pincode">
+    <textarea id="description" placeholder="Description"></textarea>
+
+    <button onclick="submitComplaint()">Register</button>
+  </div>
+
+  <script>
+    const userEmail = localStorage.getItem("currentUser");
+    if (!userEmail) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    const user = JSON.parse(localStorage.getItem(userEmail));
+    document.getElementById("greeting").innerText = `Hi, ${user.name}`;
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    }
+
+    function submitComplaint() {
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const pincode = document.getElementById("pincode").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const status = "Pending";
+
+      if (!name || !address || !city || !state || !pincode || !description) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const complaint = {
+        name, address, city, state, pincode, status, description, email: userEmail
+      };
+
+      let complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+      complaints.push(complaint);
+      localStorage.setItem("complaints", JSON.stringify(complaints));
+
+      alert("Complaint submitted successfully!");
+      window.location.href = "complaint.html"; // 👈 Link to My Complaints
+    }
+  </script>
+
+</body>
+</html>  add more beatiful like look attractive  

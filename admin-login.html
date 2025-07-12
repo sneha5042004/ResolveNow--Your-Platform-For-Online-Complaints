@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #eceff1, #b0bec5);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      background-color: #263238;
+      color: white;
+      padding: 40px 30px;
+      width: 350px;
+      margin: 100px auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-weight: normal;
+      color: #ffffff;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: #37474f;
+      color: white;
+      font-size: 15px;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    input:focus {
+      outline: none;
+      background-color: #455a64;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00acc1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #008ba3;
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        width: 90%;
+        margin: 60px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUsername" placeholder="Username">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+  </div>
+
+  <script>
+    function adminLogin() {
+      const username = document.getElementById("adminUsername").value.trim();
+      const password = document.getElementById("adminPassword").value.trim();
+
+      const userData = localStorage.getItem(username);
+      if (!userData) {
+        alert("Admin not found!");
+        return;
+      }
+
+      const user = JSON.parse(userData);
+      
+      if (user.role === "Admin" && user.password === password) {
+        localStorage.setItem("currentUser", username);
+        localStorage.setItem("currentRole", "Admin");
+        localStorage.setItem("adminLoggedIn", "true");
+        alert("Admin login successful!");
+        window.location.href = "view-complaints.html";
+      } else {
+        alert("Invalid admin credentials.");
+      }
+    }
+  </script>
+</body>
+</html>

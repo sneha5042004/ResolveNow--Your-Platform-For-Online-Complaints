@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Complaints</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #eceff1, #b0bec5);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #263238;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      margin: 0;
+      font-weight: normal;
+    }
+
+    .logout {
+      background-color: #e53935;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout:hover {
+      background-color: #c62828;
+    }
+
+    .complaints {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card p {
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .status {
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    .status.Pending {
+      background-color: #ffecb3;
+      color: #ff6f00;
+    }
+
+    .status.Solved {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .empty {
+      text-align: center;
+      color: #555;
+      font-size: 18px;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Your Registered Complaints</h2>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="complaints" id="complaintList"></div>
+
+  <script>
+    const userEmail = localStorage.getItem("currentUser");
+    if (!userEmail) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    const complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+    const userComplaints = complaints.filter(c => c.email === userEmail);
+
+    const list = document.getElementById("complaintList");
+
+    if (userComplaints.length === 0) {
+      list.innerHTML = "<p>No complaints found.</p>";
+    } else {
+      userComplaints.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <p><strong>Name:</strong> ${c.name}</p>
+          <p><strong>Address:</strong> ${c.address}</p>
+          <p><strong>City:</strong> ${c.city}</p>
+          <p><strong>State:</strong> ${c.state}</p>
+          <p><strong>Pincode:</strong> ${c.pincode}</p>
+          <p><strong>Description:</strong> ${c.description}</p>
+          <p class="status ${c.status}"><strong>Status:</strong> ${c.status}</p>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
+
