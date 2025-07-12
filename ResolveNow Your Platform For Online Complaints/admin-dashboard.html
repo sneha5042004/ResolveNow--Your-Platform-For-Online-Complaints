@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: sans-serif; background-color: #f5f5f5; padding: 20px; }
+    h2 { text-align: center; }
+    .logout {
+      float: right;
+      padding: 10px 15px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 10px auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+    .status {
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="logout" onclick="logout()">Logout</button>
+  <h2>All User Complaints</h2>
+
+  <div id="complaintsContainer"></div>
+
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      alert("Access denied. Admins only.");
+      window.location.href = "admin-login.html";
+    }
+
+    const complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+    const container = document.getElementById("complaintsContainer");
+
+    if (complaints.length === 0) {
+      container.innerHTML = "<p>No complaints found.</p>";
+    } else {
+      complaints.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <p><strong>Name:</strong> ${c.name}</p>
+          <p><strong>Email:</strong> ${c.email}</p>
+          <p><strong>Address:</strong> ${c.address}</p>
+          <p><strong>City:</strong> ${c.city}</p>
+          <p><strong>State:</strong> ${c.state}</p>
+          <p><strong>Pincode:</strong> ${c.pincode}</p>
+          <p><strong>Description:</strong> ${c.description}</p>
+          <p class="status"><strong>Status:</strong> ${c.status}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem("adminLoggedIn");
+      window.location.href = "admin-login.html";
+    }
+  </script>
+</body>
+</html>

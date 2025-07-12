@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #cfd8dc, #90a4ae);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      background-color: #263238;
+      color: white;
+      padding: 40px 30px;
+      width: 350px;
+      margin: 80px auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    input, select, button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    input, select {
+      background-color: #37474f;
+      color: white;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      background-color: #455a64;
+    }
+
+    button {
+      background: #00bcd4;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #008ba3;
+    }
+
+    a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Please enter your Details</h3>
+    <input type="text" id="name" placeholder="Full Name" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <input type="tel" id="mobile" placeholder="Mobile No." maxlength="10" />
+    
+    <select id="role">
+      <option value="Admin">Admin</option>
+      <option value="Ordinary">Ordinary</option>
+      <option value="Agent">Agent</option>
+    </select>
+    
+    <button onclick="register()">Register</button>
+    <p class="note">Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+  <script>
+    function register() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const role = document.getElementById('role').value;
+
+      if (!name || !email || !password || !mobile) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      if (localStorage.getItem(email)) {
+        alert("This email is already registered!");
+        return;
+      }
+
+      if (!/^\d{10}$/.test(mobile)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password should be at least 6 characters long.");
+        return;
+      }
+
+      const user = { name, email, password, mobile, role };
+      localStorage.setItem(email, JSON.stringify(user));
+
+      alert("Registered Successfully!");
+
+      window.location.href = role === "Admin" ? "admin-login.html" : "login.html";
+    }
+  </script>
+</body>
+</html>
+
+
